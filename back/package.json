@@ -1,0 +1,24 @@
+{
+  "name": "backendproject",
+  "version": "1.0.0",
+  "description": "firstProject",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+  "dev": "nodemon src/index.js",
+  "start": "node src/index.js"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aiatbek/backEndProject.git"
+  },
+  "author": "Aiatbek",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Aiatbek/backEndProject/issues"
+  },
+  "homepage": "https://github.com/Aiatbek/backEndProject#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
