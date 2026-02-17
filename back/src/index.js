@@ -12,10 +12,10 @@ const startServer = async () =>{
             console.log(`server running on port ${process.env.PORT}`)
         })
 
-        app.on("error", (error)=>{                                    
-            console.error(error);
-            throw error
-        })
+        app.on("error", (error) => {
+            console.error("Server error:", error);
+            process.exit(1);
+        });
         // will run any time the Express application emits an "error" event:
         // during startup (for example port conflict)
         // while the server is already running (rare cases where the app object emits an error)
