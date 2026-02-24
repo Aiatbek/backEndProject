@@ -1,14 +1,21 @@
 import express from "express"
 import cors from "cors";
+import sessionMiddleware from "./config/session.js";
 import menuRoutes from "./routes/menu.routes.js";
 import reservationRoutes from "./routes/reservation.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+
+
+
 
 const app = express()
 
 app.use(cors());
 app.use(express.json());
+app.use(sessionMiddleware);    
 app.use("/api/menu", menuRoutes);
 app.use("/api/reservations", reservationRoutes);
+app.use("/api/auth", authRoutes);
 
 
 export default app

@@ -2,13 +2,14 @@ import Reservation from "../models/Reservation.js";
 
 export const createReservation = async (req, res) => {
     try {
-        const { userId, name, email, phone, date, time, numberOfGuests, specialRequests } = req.body;
+        const { name, email, phone, date, time, numberOfGuests, specialRequests } = req.body;
+        
 
         if (!name || !phone || !email || !date || !time || !numberOfGuests) {
         return res.status(400).json({ message: "Missing required fields" });
         }
         const newReservation = new Reservation({
-            userId,
+            userId: req.session.userId,
             name,
             email,
             phone,

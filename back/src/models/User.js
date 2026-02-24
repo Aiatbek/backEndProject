@@ -1,4 +1,4 @@
-import mangoose, {Schema} from "mongoose";
+import mongoose, {Schema} from "mongoose";
 
 const userSchema = new Schema({
     name: {
@@ -19,9 +19,9 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ["user", "admin"],
-        default: "user"
+        role: "user"
     }, 
 }, {timestamps: true})
 
-const User = mangoose.model("User", userSchema)
+const User = mongoose.model("User", userSchema)
+export default User;
