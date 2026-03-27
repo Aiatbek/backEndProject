@@ -1,37 +1,52 @@
 import "dotenv/config";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import connectDB from "./config/database.js";
+import app from "./app.js";
 
-import connectDB from "./config/database.js"
-import app from "./app.js"
+const httpServer = createServer(app);
 
-const startServer = async () =>{
-    try{
-        await connectDB(); //connects database and waits for function connectDB to finish
-        app.listen(process.env.PORT || 8000, ()=>{
-            console.log(`server running on port ${process.env.PORT}`)
-        })
+/**
+ * Socket.IO server — attached to the same HTTP server as Express.
+ * CORS mirrors app.js so cookies/credentials work cross-origin.
+ */
+export const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  },
+});
 
-        app.on("error", (error) => {
-            console.error("Server error:", error);
-            process.exit(1);
-        });
-        // will run any time the Express application emits an "error" event:
-        // during startup (for example port conflict)
-        // while the server is already running (rare cases where the app object emits an error)
+io.on("connection", (socket) => {
+  console.log("Socket connected:", socket.id);
 
-        // However, important detail:
-        // Most runtime request errors (route errors, controller errors, DB errors)
-        // are NOT caught by app.on("error").
-        // Those should be handled by Express error-handling middleware instead.
-    }
-    catch(er){
-        console.error("START FAILED: ", er.message);
-        process.exit(1);
-        // It catches any error that happens while starting the application, for example:
-        // Database connection failed (wrong URI, DB down)
-        // Invalid environment variables
-        // Port already in use (if thrown in startup flow)
-        // Any error thrown inside connectDB() or startup logic
-    }
-}
+  // Client joins a room based on their role
+  // Frontend calls: socket.emit("join", "admin") or socket.emit("join", userId)
+  socket.on("join", (room) => {
+    socket.join(room);
+    console.log(`Socket ${socket.id} joined room: ${room}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Socket disconnected:", socket.id);
+  });
+});
+
+const startServer = async () => {
+  try {
+    await connectDB();
+    httpServer.listen(process.env.PORT || 5000, () => {
+      console.log(`Server running on port ${process.env.PORT || 5000}`);
+    });
+
+    httpServer.on("error", (error) => {
+      console.error("Server error:", error);
+      process.exit(1);
+    });
+  } catch (er) {
+    console.error("START FAILED:", er.message);
+    process.exit(1);
+  }
+};
 
 startServer();

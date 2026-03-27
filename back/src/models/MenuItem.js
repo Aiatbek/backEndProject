@@ -29,7 +29,12 @@ const menuItemSchema = new mongoose.Schema({
     isAvailable: {
       type: Boolean,
       default: true
+    }, 
+    isFeatured: {
+    type: Boolean,
+    default: false
     }
+    
 }, {timestamps: true});
 
 const MenuItem = mongoose.model("MenuItem", menuItemSchema);
