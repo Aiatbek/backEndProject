@@ -3,6 +3,7 @@ import MenuItem from "../models/MenuItem.js";
 import User from "../models/User.js";
 import { sendOrderConfirmation } from "../config/mailer.js";
 import { io } from "../index.js";
+import { sendTelegramNotification } from '../config/telegram.js'
 
 // POST /api/orders
 export const createOrder = async (req, res) => {
@@ -51,13 +52,18 @@ export const createOrder = async (req, res) => {
       sendOrderConfirmation(order, user, populatedItems).catch((err) =>
         console.error("Order email failed:", err.message)
       );
+       sendTelegramNotification(
+      `🍖 <b>New order!</b>\n👤 ${populated.userId?.name}\n📱 ${populated.userId?.phone}\n💰 $${order.totalPrice.toFixed(2)}\n📋 ${populatedItems.map(i => `${i.quantity}× ${i.name}`).join(', ')}`
+    )
     }
+    
 
     res.status(201).json(order);
   } catch (error) {
     res.status(500).json({ message: "Failed to create order" });
   }
 };
+
 
 // GET /api/orders/my
 export const getMyOrders = async (req, res) => {
