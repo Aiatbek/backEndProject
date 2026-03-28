@@ -8,6 +8,7 @@ import homeRoutes from "./routes/home.routes.js";
 import orderRoutes from "./routes/order.routes.js"
 
 const app = express()
+app.set('trust proxy', 1)
 
 /**
  * CORS must be configured BEFORE session middleware and routes.
