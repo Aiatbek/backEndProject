@@ -18,59 +18,15 @@ Node.js REST API for the TASTE OF KBBQ restaurant application.
 ## Project Structure
 ```
 kbbq-backend/
-├── src/
-│   ├── controllers/    auth, menu, order, reservation, home, orderStats
-│   ├── models/         User, MenuItem, Order, Reservation, Home
-│   ├── routes/         auth, menu, order, reservation, home
-│   ├── middleware/     auth.js, requireRole.js
-│   └── config/         database.js, session.js
-└── railway.toml
+─ src/
+   ├── controllers/    auth, menu, order, reservation, home, orderStats
+   ├── models/         User, MenuItem, Order, Reservation, Home
+   ├── routes/         auth, menu, order, reservation, home
+   ├── middleware/     auth.js
+   └── config/         database.js, session.js, mailer.js, telegram.js
 ```
 
 ---
-
-## Local Development
-
-### Prerequisites
-- Node.js 18+
-- npm
-- MongoDB Atlas account (or local MongoDB)
-
-### 1. Clone and install
-```bash
-git clone <your-backend-repo-url>
-cd kbbq-backend
-npm install
-```
-
-### 2. Environment variables
-
-Create a `.env` file in the root:
-```
-MONGODB_URI=
-SESSION_SECRET=
-CLIENT_URL=
-PORT= # local only, Railway sets this automatically
-ADMIN_EMAIL=
-ADMIN_PASSWORD=
-GMAIL_USER=
-GMAIL_PASS=
-TELEGRAM_BOT_TOKEN=
-TELEGRAM_CHAT_ID=
-```
-
-### 3. Seed the admin user
-```bash
-npm run seed:admin
-```
-
-### 4. Start the server
-```bash
-npm run dev      # runs on http://localhost:5000 (set via PORT in .env)
-```
-
----
-
 ## API Endpoints
 
 ### Auth
@@ -115,20 +71,62 @@ npm run dev      # runs on http://localhost:5000 (set via PORT in .env)
 
 ---
 
+## Local Development
+
+### Prerequisites
+- Node.js 18+
+- npm
+- MongoDB Atlas account (or local MongoDB)
+
+### 1. Clone and install
+```bash
+git clone https://github.com/Aiatbek/kbbq-backend.git
+cd kbbq-backend
+npm install
+```
+
+### 2. Environment variables
+
+Create a `.env` file in the root:
+```
+MONGODB_URI=
+SESSION_SECRET=
+CLIENT_URL=
+PORT= # local only, Railway sets this automatically
+ADMIN_EMAIL=
+ADMIN_PASSWORD=
+GMAIL_USER=
+GMAIL_PASS=
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+```
+
+### 3. Seed the admin user
+```bash
+npm run seed:admin
+```
+
+### 4. Start the server
+```bash
+npm run dev      # runs on (set via PORT in .env)
+```
+
+---
+
+
 ## Deployment — Railway
 
 1. Push this repo to GitHub
-2. Go to [railway.app](https://railway.app) → New Project → Deploy from GitHub
+2. Go to (https://railway.app) → New Project → Deploy from GitHub
 3. Select this repo
 4. Add environment variables in Railway dashboard:
 ```
-MONGODB_URI=<your atlas URI>
-SESSION_SECRET=<strong random string>
+MONGODB_URI=
+SESSION_SECRET=
 CLIENT_URL=<your vercel frontend URL>
-PORT=5000
-ADMIN_EMAIL=admin@kkbbq.com
-ADMIN_PASSWORD=<strong password>
-NODE_ENV=production
+ADMIN_EMAIL=
+ADMIN_PASSWORD=
+NODE_ENV='production'
 ```
 
 5. Railway will auto-detect Node.js and deploy. Your API will be at:
@@ -141,17 +139,13 @@ npm run seed:admin
 
 ### Production CORS
 
-Set `CLIENT_URL` in Railway to your Vercel frontend URL:
-```
-CLIENT_URL=https://your-app.vercel.app
-```
-Then redeploy for the change to take effect.
+Set `CLIENT_URL` in Railway to Vercel frontend URL
 
 ---
 
 ## Session Security Checklist (before going live)
 
-- [ ] `SESSION_SECRET` is a long random string (32+ chars)
+- [ ] `SESSION_SECRET` 
 - [ ] `cookie.secure = true` in production (HTTPS only)
 - [ ] `cookie.sameSite = 'none'` since frontend and backend are on different domains
 - [ ] `MONGODB_URI` uses a dedicated Atlas user with least-privilege access

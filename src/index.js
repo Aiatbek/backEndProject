@@ -12,7 +12,7 @@ const httpServer = createServer(app);
  */
 export const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   },
 });
@@ -35,8 +35,8 @@ io.on("connection", (socket) => {
 const startServer = async () => {
   try {
     await connectDB();
-    httpServer.listen(process.env.PORT || 5000, () => {
-      console.log(`Server running on port ${process.env.PORT || 5000}`);
+    httpServer.listen(process.env.PORT, () => {
+      console.log(`Server running on port ${process.env.PORT}`);
     });
 
     httpServer.on("error", (error) => {
