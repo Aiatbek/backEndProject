@@ -8,8 +8,7 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/logout', logoutUser);
 
-// Rehydration endpoint — frontend calls this on every page load
-// requireAuth ensures only sessions with a valid userId get a response
+
 router.get('/me', requireAuth, getMe);
 
 export default router;

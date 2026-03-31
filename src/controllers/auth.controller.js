@@ -39,6 +39,14 @@ export const loginUser = async (req, res) => {
             if (err) {
                 return res.status(500).json({ message: "Session regeneration failed" });
             }
+        //  in MongoDB, the session document would look sth like this:{
+        //   _id: "abc123.x7k2p9q",
+        //   session: {
+        //     userId: "64f3a2b1c9e4f5a6b7c8d9e0",
+        //     isAdmin: false
+        //   },
+        //   expires: ISODate("2026-03-28T...")
+        // }
             req.session.userId = existingUser._id;
             res.json({
                 message: "Login successful",

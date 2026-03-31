@@ -39,13 +39,13 @@ const orderSchema = new mongoose.Schema(
     },
 
     type: {
-      type: String,
-      enum: ["pickup", "delivery"],
+      type: String, //dead code for now.
+      enum: ["pickup", "delivery"], 
       default: "pickup"
     },
 
-    address: {
-      type: String,
+    address: {  //dead code for now.
+      type: String, 
       default: ""
     }
   },
